@@ -1,0 +1,27 @@
+{
+
+	"manifest_version": 2,
+	"name": "TST Notepad",
+	"version": "1.0",
+  
+	"description": "Adds a notepad to the Tree Style Tabs subpanel",
+  
+	"icons": {
+	  "48": "icons/notepad-48.png"
+	},
+  
+	"options_ui": {
+		"page": "/options/options.html"
+	},
+
+	"background": {
+		"page": "/background/background.html"
+	},
+
+	"web_accessible_resources": [
+		"resources/*",
+		"panel/*"
+	]
+  
+  }
+  
