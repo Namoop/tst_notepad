@@ -25,18 +25,16 @@ function $(input) {
 }
 
 const editor = $("#editorpage");
-const notespage = $("#mainpage")
+const notespage = $("#mainpage");
 const notes = $("#notes");
 
 function hideEditor() {
 	editor.style.display = "none";
 	notespage.style.display = "";
-	//document.body.style.backgroundColor = "#414c57";
 }
 function showEditor() {
 	editor.style.display = "";
 	notespage.style.display = "none";
-	//document.body.style.backgroundColor = "";
 }
 hideEditor();
 
@@ -45,23 +43,31 @@ function addBackButton() {
 	el.style.backgroundColor = "#bbbbbb";
 	el.style.borderRadius = "10px";
 	el.innerHTML = `<svg viewBox="0 0 512 512"><path d="M14.114 191.386 185.993 42.963c15.045-12.993 38.757-2.445 38.757 17.738v78.177C381.614 140.674 506 172.113 506 320.771c0 60.001-38.653 119.442-81.38 150.52-13.333 9.698-32.335-2.474-27.419-18.194 44.281-141.613-21.003-179.209-172.451-181.389v85.855c0 20.215-23.73 30.716-38.757 17.738L14.114 226.863c-10.811-9.338-10.826-26.126 0-35.477z"/></svg>`;
-	el.onclick = ()=>{
+	el.onclick = () => {
+		if (retrieve(storekey).preview.length == 1) remove(storekey);
 		hideEditor();
 		showNoteCards();
-	}
-	const toolbar = $(".ql-toolbar")[1]
+	};
+	const toolbar = $(".ql-toolbar")[1];
 	//toolbar.innerHTML = el.outerHTML + toolbar.innerHTML;
 	//$(".ql-toolbar")[1].appendChild(el)
 }
 addBackButton();
 
 $("#newnote").onclick = function () {
-	const len = storageLength();
-	store(len, {ops: [], preview: "New Note"})
-	storekey = len
-	loadNote(len)
+	const key = newKey();
+	store(key, { ops: [], preview: "New Note" });
+	loadNote(key);
+};
+
+let theme = true;
+$("#darkmode").onclick = function () {
+	if (theme) $("html").style.filter = "invert(100%)"
+	else $("html").style.filter = "";
+	theme = !theme;
 }
 
+// Storage-specific wrapper functions
 function store(key, value) {
 	localStorage.setItem(key, JSON.stringify(value).replace(/\\n/g, "\\n"));
 }
@@ -71,9 +77,21 @@ function retrieve(key) {
 function storageLength() {
 	return localStorage.length;
 }
+function allKeys() {
+	return Object.keys(localStorage);
+}
+function newKey() {
+	return storageLength();
+}
+function remove(key) {
+	const len = storageLength();
+	for (let i = key; i < len-1; i++) {
+		store(i, retrieve(+i+1))
+	}
+	localStorage.removeItem(len-1)
+}
 
 // localStorage.clear();
-
 // localStorage.setItem("0", "{\"ops\":[{\"insert\":\"New Note on the history of life, the universe, and everything\\nNothing here yet...\\n\"}],\"preview\":\"New Note on the history of life, the universe, and everything\\nNothing here yet...\\n\"}")
 
 function newCard(key) {
@@ -85,12 +103,14 @@ function newCard(key) {
 	const note_title = note_content.split("\n")[0].substring(0, 16);
 	const note_preview = note_content;
 
-	el.innerHTML = `<div class="card-front">
-	<h1 style="color:white">${note_title}</h1>
-</div>
-<div class="card-back">
-	<code>${note_preview.replaceAll("\n", "<br>")}</code>
-</div>
+	el.innerHTML = `
+	<div class="card-front">
+		<h1 style="color:white">${note_title}</h1>
+	</div>
+	<div class="card-back">
+		<span class="card-close-before"></span>
+		<code>${note_preview.replaceAll("\n", "<br>")}</code>
+	</div>
 	`;
 	notes.appendChild(el);
 }
@@ -98,7 +118,7 @@ function newCard(key) {
 function showNoteCards() {
 	notes.innerHTML = "";
 	const len = storageLength();
-	for (let i = 0; i < len; i++) {
+	for (let i of allKeys()) {
 		newCard(i);
 	}
 }
@@ -120,12 +140,14 @@ quill.on("text-change", function (delta, oldDelta, source) {
 	}
 	const contents = quill.getContents();
 	contents.preview = quill.getText(0, 300);
-	//if empty autodelete
 	store(storekey, contents);
 });
 
 // delete note (w/ confirmation popup)
-// lightmode / darkmode
 // change store/retrieve to work with browser storage
 // depending on how often local/sync storage can be edited, maybe store to temporary var somewhere until can be written?
 // rewrite save to periodically save, use change.compose delta
+
+// searchbar: onkeypress/inputchange
+// onlengthincrease filter and hide,onlength
+// onlengthdecrease unfilter

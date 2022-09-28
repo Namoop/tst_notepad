@@ -1,10 +1,12 @@
 html {
 	height: 100%;
 	scrollbar-width: none;
+	/* filter: invert(100%); */
 }
 body {
 	margin: 0;
 	height: 100%;
+	background-color: #1c1b22;
 }
 
 /* Editor Page Styles */
@@ -14,14 +16,16 @@ body {
 	scrollbar-width: none;
 	min-height: 70vh;
 	height: 85%;
+	color: #fbfbfb;
 }
 .ql-toolbar.ql-snow {
 	position: sticky !important;
 	top: 0;
-	background-color: white;
 	z-index: 10;
 	overflow-x: clip;
 	overflow-y: visible;
+	background-color: #e3e4dd;
+	filter: invert(100%);
 }
 
 .ql-formats {
@@ -40,7 +44,6 @@ body {
 /* Main Page Styles */
 
 #toolbar {
-	background-color: white;
 	height: 42px;
 	border-bottom: 1px solid #ccc;
 }
@@ -73,7 +76,7 @@ code {
 	position: relative;
 	width: 80vw;
 	height: 90px;
-	margin: 5px;
+	margin: 10px;
 	perspective: 2400px;
 }
 .card-front,
@@ -94,11 +97,13 @@ code {
 .card-front:before,
 .card-front:after,
 .card-back:before,
-.card-back:after {
+.card-back:after,
+.card-close-before {
 	position: absolute;
 }
 .card-front:before,
-.card-back:before {
+.card-back:before,
+.card-close-before {
 	top: -40px;
 	right: -40px;
 	content: "";
@@ -141,5 +146,10 @@ code {
 	transform: rotateX(0deg);
 }
 .card code {
-	color: whitesmoke;
+	color: #fbfbfb;
+}
+.card-close-before:hover {
+	width: 150px;
+	height: 100px;
+	right: -60px;
 }
