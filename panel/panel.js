@@ -68,7 +68,7 @@ $("#darkmode").onclick = function () {
 };
 
 $("#removeall").onclick = function () {
-	//POLYFILL CONFIRM USING HTML DIOLOG
+	//REPLACE WITH CONFIRM DIALOG
 	const ok = confirm("Are you sure? This removes ALL of your notes.");
 	if (ok) removeAll();
 };
@@ -149,10 +149,10 @@ function newCard(key) {
 	`;
 	notes.appendChild(el);
 	let deleting = false;
-	$(".card-close-container").at(-1).onclick = () => {
+	$(".card-close-container").at(-1).onclick = async function () {
 		deleting = true;
-		const ok = confirm(`Are you sure you want to delete this note?`); //figure out way to display size of note, eg character count or something (maybe store character/wod count in object)
-		if (ok) {
+		$("#confirm").showModal();
+		if (await modalResponse() == "default") {
 			remove(key);
 			el.remove(); //if numbering notes remember to refresh them
 		}
@@ -163,6 +163,9 @@ function newCard(key) {
 			deleting = false;
 		}
 	};
+}
+function modalResponse () {
+	return new Promise (resolve => $("#confirm").onclose = ()=> resolve($("#confirm").returnValue))
 }
 
 function showNoteCards() {
