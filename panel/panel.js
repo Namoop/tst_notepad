@@ -68,12 +68,16 @@ $("#darkmode").onclick = function () {
 };
 
 $("#removeall").onclick = function () {
+	//POLYFILL CONFIRM USING HTML DIOLOG
 	const ok = confirm("Are you sure? This removes ALL of your notes.");
 	if (ok) removeAll();
 };
 
+$("#searchlabel").onclick = function () {
+	$("#searchbar").focus();
+}
+
 $("#searchbar").oninput = function (e) {
-	//ALSO POLYFILL CONFIRM IF IT DOESNT WORK IN EXTENSION
 	[...notes.children].forEach(
 		(a) =>
 			(a.style.display =

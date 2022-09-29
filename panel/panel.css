@@ -59,6 +59,16 @@ body {
 	fill: #06c;
 }
 
+@media (max-width: 258px) {
+	#searchbar {
+		position: absolute;
+		right: -100px;
+	}
+	#searchbar:focus {
+		right: 0px;
+	}
+}
+
 
 /* Card flip from https://codepen.io/joshuaward/pen/YMyPWr */
 #notes {
