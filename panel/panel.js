@@ -67,10 +67,12 @@ $("#darkmode").onclick = function () {
 	theme = !theme;
 };
 
-$("#removeall").onclick = function () {
-	//REPLACE WITH CONFIRM DIALOG
-	const ok = confirm("Are you sure? This removes ALL of your notes.");
-	if (ok) removeAll();
+$("#removeall").onclick = async function () {
+	const ok = await modalResponse("Are you sure? This removes <strong>ALL</strong> of your notes.");
+	if (ok) {
+		removeAll();
+		notes.innerHTML = ""
+	}
 };
 
 $("#searchlabel").onclick = function () {
@@ -151,8 +153,8 @@ function newCard(key) {
 	let deleting = false;
 	$(".card-close-container").at(-1).onclick = async function () {
 		deleting = true;
-		$("#confirm").showModal();
-		if (await modalResponse() == "default") {
+		const ok = await modalResponse("Are you sure you want to delete this note?")
+		if (ok) {
 			remove(key);
 			el.remove(); //if numbering notes remember to refresh them
 		}
@@ -164,9 +166,13 @@ function newCard(key) {
 		}
 	};
 }
-function modalResponse () {
-	return new Promise (resolve => $("#confirm").onclose = ()=> resolve($("#confirm").returnValue))
+function modalResponse (text) {
+	const html = $("#confirm")
+	html.showModal();
+	html.firstElementChild.innerHTML = text;
+	return new Promise (resolve => html.onclose = ()=> resolve($("#confirm").returnValue != "cancel"))
 }
+
 
 function showNoteCards() {
 	notes.innerHTML = "";
