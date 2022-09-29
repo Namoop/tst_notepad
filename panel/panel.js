@@ -20,7 +20,7 @@ function $(input) {
 	switch (input.constructor) {
 		case String:
 			const all = document.querySelectorAll(input);
-			return all.length - 1 ? all : all[0];
+			return all.length - 1 ? [...all] : all[0];
 	}
 }
 
@@ -62,10 +62,25 @@ $("#newnote").onclick = function () {
 
 let theme = true;
 $("#darkmode").onclick = function () {
-	if (theme) $("html").style.filter = "invert(100%)"
+	if (theme) $("html").style.filter = "invert(100%)";
 	else $("html").style.filter = "";
 	theme = !theme;
+};
+
+$("#removeall").onclick = function () {
+	const ok = confirm("Are you sure? This removes ALL of your notes.");
+	if (ok) removeAll();
+};
+
+$("#searchbar").oninput = function (e) {
+	//switch to needle in haystack
+	//make sure to set to nocaps
+	//ALSO POLYFILL CONFIRM IF IT DOESNT WORK IN EXTENSION
+	[...notes.children].forEach( 
+		a => a.style.display = (fuzzyMatch(e.target.value, a.firstElementChild.children[1].innerText, 1)) ? "" : "none"
+	)
 }
+
 
 // Storage-specific wrapper functions
 function store(key, value) {
@@ -85,19 +100,19 @@ function newKey() {
 }
 function remove(key) {
 	const len = storageLength();
-	for (let i = key; i < len-1; i++) {
-		store(i, retrieve(+i+1))
+	for (let i = key; i < len - 1; i++) {
+		store(i, retrieve(+i + 1));
 	}
-	localStorage.removeItem(len-1)
+	localStorage.removeItem(len - 1);
 }
-
-// localStorage.clear();
-// localStorage.setItem("0", "{\"ops\":[{\"insert\":\"New Note on the history of life, the universe, and everything\\nNothing here yet...\\n\"}],\"preview\":\"New Note on the history of life, the universe, and everything\\nNothing here yet...\\n\"}")
+function removeAll() {
+	localStorage.clear();
+}
+// end
 
 function newCard(key) {
 	const el = document.createElement("div");
 	el.className = "card";
-	el.onclick = () => loadNote(key);
 
 	const note_content = retrieve(key).preview;
 	const note_title = note_content.split("\n")[0].substring(0, 16);
@@ -105,14 +120,37 @@ function newCard(key) {
 
 	el.innerHTML = `
 	<div class="card-front">
+		<div class="card-close-container">
+			<span class="card-close-after">+</span>
+			<span class="card-close-before"></span>
+		</div>
 		<h1 style="color:white">${note_title}</h1>
+		
 	</div>
 	<div class="card-back">
-		<span class="card-close-before"></span>
+		<div class="card-close-container">
+			<span class="card-close-after">+</span>
+			<span class="card-close-before"></span>
+		</div>
 		<code>${note_preview.replaceAll("\n", "<br>")}</code>
 	</div>
 	`;
 	notes.appendChild(el);
+	let deleting = false;
+	$(".card-close-container").at(-1).onclick = () => {
+		deleting = true;
+		const ok = confirm(`Are you sure you want to delete this note?`) //figure out way to display size of note, eg character count or something (maybe store character/wod count in object)
+		if (ok) {
+			remove(key);
+			el.remove(); //if numbering notes remember to refresh them
+		}
+	}
+	el.onclick = () => {
+		if (!deleting) {
+			loadNote(key);
+			deleting = false;
+		}
+	};
 }
 
 function showNoteCards() {
@@ -143,11 +181,6 @@ quill.on("text-change", function (delta, oldDelta, source) {
 	store(storekey, contents);
 });
 
-// delete note (w/ confirmation popup)
 // change store/retrieve to work with browser storage
 // depending on how often local/sync storage can be edited, maybe store to temporary var somewhere until can be written?
 // rewrite save to periodically save, use change.compose delta
-
-// searchbar: onkeypress/inputchange
-// onlengthincrease filter and hide,onlength
-// onlengthdecrease unfilter
