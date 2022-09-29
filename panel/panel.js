@@ -73,14 +73,22 @@ $("#removeall").onclick = function () {
 };
 
 $("#searchbar").oninput = function (e) {
-	//switch to needle in haystack
-	//make sure to set to nocaps
 	//ALSO POLYFILL CONFIRM IF IT DOESNT WORK IN EXTENSION
-	[...notes.children].forEach( 
-		a => a.style.display = (fuzzyMatch(e.target.value, a.firstElementChild.children[1].innerText, 1)) ? "" : "none"
-	)
-}
-
+	[...notes.children].forEach(
+		(a) =>
+			(a.style.display =
+				e.target.value.length == 0 ||
+				[
+					...fuzzySearch(
+						e.target.value,
+						a.firstElementChild.children[1].innerText,
+						2
+					),
+				].length > 0
+					? ""
+					: "none")
+	);
+};
 
 // Storage-specific wrapper functions
 function store(key, value) {
@@ -139,12 +147,12 @@ function newCard(key) {
 	let deleting = false;
 	$(".card-close-container").at(-1).onclick = () => {
 		deleting = true;
-		const ok = confirm(`Are you sure you want to delete this note?`) //figure out way to display size of note, eg character count or something (maybe store character/wod count in object)
+		const ok = confirm(`Are you sure you want to delete this note?`); //figure out way to display size of note, eg character count or something (maybe store character/wod count in object)
 		if (ok) {
 			remove(key);
 			el.remove(); //if numbering notes remember to refresh them
 		}
-	}
+	};
 	el.onclick = () => {
 		if (!deleting) {
 			loadNote(key);

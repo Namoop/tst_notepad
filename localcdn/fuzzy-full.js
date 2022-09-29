@@ -1,5 +1,6 @@
 // https://github.com/taleinat/levenshtein-search
 function isEditDistanceNoGreaterThan (a, b, maxDist) {
+	[a, b] = [a.toLowerCase(), b.toLowerCase()] //capinski
 	if (a.length > b.length) {
 	  [a, b] = [b, a]
 	}
@@ -33,6 +34,7 @@ function isEditDistanceNoGreaterThan (a, b, maxDist) {
   }
   
   function editDistance (a, b) {
+	[a, b] = [a.toLowerCase(), b.toLowerCase()] //capinski
 	if (a.length > b.length) {
 	  [a, b] = [b, a]
 	}
@@ -69,6 +71,7 @@ function isEditDistanceNoGreaterThan (a, b, maxDist) {
   }
   
   function * fuzzySearch (needle, haystack, maxDist) {
+	[needle, haystack] = [needle.toLowerCase(), haystack.toLowerCase()] //capinski
 	if (needle.length > haystack.length + maxDist) return
   
 	const ngramLen = Math.floor(needle.length / (maxDist + 1))
