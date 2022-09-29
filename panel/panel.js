@@ -27,6 +27,7 @@ function $(input) {
 const editor = $("#editorpage");
 const notespage = $("#mainpage");
 const notes = $("#notes");
+const PLACEHOLDER = "<span>No notes yet! Press the <strong>+</strong> button to create a new one.</span>"
 
 function hideEditor() {
 	editor.style.display = "none";
@@ -71,7 +72,7 @@ $("#removeall").onclick = async function () {
 	const ok = await modalResponse("Are you sure? This removes <strong>ALL</strong> of your notes.");
 	if (ok) {
 		removeAll();
-		notes.innerHTML = ""
+		notes.innerHTML = PLACEHOLDER
 	}
 };
 
@@ -157,6 +158,7 @@ function newCard(key) {
 		if (ok) {
 			remove(key);
 			el.remove(); //if numbering notes remember to refresh them
+			if (notes.innerHTML == "") notes.innerHTML = PLACEHOLDER
 		}
 	};
 	el.onclick = () => {
@@ -175,8 +177,8 @@ function modalResponse (text) {
 
 
 function showNoteCards() {
-	notes.innerHTML = "";
 	const len = storageLength();
+	notes.innerHTML = len ? "" : PLACEHOLDER;
 	for (let i of allKeys()) {
 		newCard(i);
 	}

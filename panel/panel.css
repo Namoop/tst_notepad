@@ -27,7 +27,6 @@ body {
 	background-color: #e3e4dd;
 	filter: invert(100%);
 }
-
 .ql-formats {
 	display: flex !important;
 }
@@ -47,18 +46,17 @@ body {
 	height: 42px;
 	border-bottom: 1px solid #ccc;
 }
-
+#notes {
+	color: white;
+}
 #searchbar {
 	border: 2px solid black;
 	border-radius: 10px;
 	width: 100px
 }
-
-
 .ql-toolbar.ql-snow button:hover {
 	fill: #06c;
 }
-
 @media (max-width: 258px) {
 	#searchbar {
 		position: absolute;
@@ -68,6 +66,7 @@ body {
 		right: 0px;
 	}
 }
+
 
 
 /* Card flip from https://codepen.io/joshuaward/pen/YMyPWr */
@@ -81,13 +80,11 @@ body {
 	font-weight: 300;
 	line-height: 1.5;
 }
-
 code {
 	font-family: "Lucida Console", Monaco, monospace;
 	font-size: min(max(5vw, 10px), 14px);
 	/* font-size: 14px; */
 }
-
 .card {
 	position: relative;
 	width: 80vw;
