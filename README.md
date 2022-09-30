@@ -12,4 +12,7 @@ Adds a minimal note-taking application to the subpanel in Tree Style Tabs, to al
 - Note preview before opening
 - Neat css tricks
 
-Note: must contain local file of the libraries used because when in the panel cannot make network calls (might move to background page later)
+Attributions:
+(Quill.js)[https://quilljs.com/]
+(Taleinat)[https://github.com/taleinat/levenshtein-search]
+(Iconscout)[https://iconscout.com]

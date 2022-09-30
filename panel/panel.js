@@ -164,18 +164,13 @@ async function removeAll() {
 async function newCard(key) {
 	const el = document.createElement("div");
 	el.className = "card";
-
-	const note_content = (await retrieve(key)).preview;
-	const note_title = note_content.split("\n")[0].substring(0, 16);
-	const note_preview = note_content;
-
 	el.innerHTML = `
 	<div class="card-front">
 		<div class="card-close-container">
 			<span class="card-close-after">+</span>
 			<span class="card-close-before"></span>
 		</div>
-		<h1 style="color:white">${note_title}</h1>
+		<h1 style="color:white"></h1>
 		
 	</div>
 	<div class="card-back">
@@ -183,9 +178,16 @@ async function newCard(key) {
 			<span class="card-close-after">+</span>
 			<span class="card-close-before"></span>
 		</div>
-		<code>${note_preview.replaceAll("\n", "<br>")}</code>
+		<code></code>
 	</div>
 	`;
+
+	const note_content = (await retrieve(key)).preview;
+	const note_title = note_content.split("\n")[0].substring(0, 16);
+	const note_preview = note_content;
+	el.querySelector("h1").innerText = note_title
+	el.querySelector("code").innerText = note_preview.replaceAll("\n", "<br>")
+
 	notes.appendChild(el);
 	let deleting = false;
 	$(".card-close-container").at(-1).onclick = async function () {
