@@ -186,7 +186,7 @@ async function newCard(key) {
 	const note_title = note_content.split("\n")[0].substring(0, 16);
 	const note_preview = note_content;
 	el.querySelector("h1").innerText = note_title
-	el.querySelector("code").innerText = note_preview.replaceAll("\n", "<br>")
+	el.querySelector("code").innerText = note_preview
 
 	notes.appendChild(el);
 	let deleting = false;
