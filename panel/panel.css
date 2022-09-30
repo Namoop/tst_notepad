@@ -10,6 +10,9 @@ body {
 }
 
 /* Editor Page Styles */
+.ql-container {
+	border: none !important;
+}
 #editor .ql-editor {
 	font-size: 18px;
 	padding: 0px 3px !important;
