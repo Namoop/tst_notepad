@@ -139,7 +139,7 @@ code {
 .card-close-before,
 .card-close-after {
 	position: absolute;
-	transition: transform 1s, color 1s, background-color 1s;
+	transition: transform 0.3s, color 1s, background-color 1s;
 }
 .card-close-before {
 	top: -40px;

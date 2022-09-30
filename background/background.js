@@ -43,10 +43,9 @@ registerToTST(); // Your addon is initialized after TST.
 
 browser.runtime.onMessage.addListener(async function (message) {
 	const keys = (await browser.storage.local.get("keys")).keys ?? [];
-
-	const obj = {};
 	switch (message.type) {
 		case "store":
+			const obj = {};
 			obj[message.key] = message.value;
 			await browser.storage.local.set(obj);
 
