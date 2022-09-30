@@ -108,7 +108,7 @@ $("#searchbar").oninput = function (e) {
 
 // Storage-specific wrapper functions
 const msg = browser.runtime.sendMessage
-const MODE = "localstorage";
+const MODE = "firefox";
 async function store(key, value) {
 	if (MODE == "localstorage")
 		localStorage.setItem(key, JSON.stringify(value).replace(/\\n/g, "\\n"));
@@ -137,7 +137,7 @@ async function allKeys() {
 function newKey() {
 	if (MODE == "localstorage") return storageLength();
 	else if (MODE == "firefox") {
-		return Date.now();
+		return "n"+Date.now();
 	}
 }
 async function remove(key) {

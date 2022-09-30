@@ -41,9 +41,8 @@ browser.runtime.onMessageExternal.addListener((message, sender) => {
 
 registerToTST(); // Your addon is initialized after TST.
 
-browser.runtime.onMessage.addListener(async function (message, sender) {
-	//on get use results object?
-	const keys = (await browser.storage.local.get("keys").keys) ?? [];
+browser.runtime.onMessage.addListener(async function (message) {
+	const keys = (await browser.storage.local.get("keys")).keys ?? [];
 
 	const obj = {};
 	switch (message.type) {
@@ -55,11 +54,10 @@ browser.runtime.onMessage.addListener(async function (message, sender) {
 				keys.push(message.key);
 				await browser.storage.local.set({ keys: keys });
 			}
-
 			return;
 		case "retrieve":
 			//on get use results object?
-			const res = await browser.storage.local.get(message.key)[message.key];
+			const res = (await browser.storage.local.get(message.key))[message.key];
 			const bytes = new TextEncoder().encode(
 				Object.entries(res)
 					.map(([key, value]) => key + JSON.stringify(value))
@@ -80,7 +78,5 @@ browser.runtime.onMessage.addListener(async function (message, sender) {
 			browser.storage.local.clear();
 			await browser.storage.local.set({ keys: [] });
 			return;
-		default:
-		// uh oh
 	}
 });
