@@ -39,6 +39,35 @@ body {
 		width: 24px !important;
 	}
 }
+#saveicon {
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	right: 10px;
+	top: 50px;
+	border-radius: 7px;
+	fill: rgb(216, 216, 216);
+	padding: 2px;
+	display: none;
+}
+:root {
+	--mult: 2.5px;
+}
+@keyframes marching-ants {
+	0% {
+	  background-position: 0 0, calc(var(--mult)*5) 100%, 0 calc(var(--mult)*5), 100% 0;
+	}
+	100% {
+	  background-position: calc(var(--mult)*5) 0, 0 100%, 0 0, 100% calc(var(--mult)*5);
+	}
+  }
+  
+  .ants {
+	background-image: linear-gradient(90deg, #ff9933 50%, transparent 50%), linear-gradient(90deg, #ff9933 50%, transparent 50%), linear-gradient(0, #ff9933 50%, transparent 50%), linear-gradient(0, #ff9933 50%, transparent 50%);
+	background-repeat: repeat-x, repeat-x, repeat-y, repeat-y;
+	background-size: calc(var(--mult)*5) var(--mult), calc(var(--mult)*5) var(--mult), var(--mult) calc(var(--mult)*5), var(--mult) calc(var(--mult)*5);
+	animation: marching-ants 400ms infinite linear;
+  }
 
 /* Main Page Styles */
 
