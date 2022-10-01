@@ -13,9 +13,12 @@ Adds a minimal note-taking application to the subpanel in Tree Style Tabs, to al
 - Neat css tricks
 
 Attributions:
-(Quill.js)[https://quilljs.com/]
-(Taleinat)[https://github.com/taleinat/levenshtein-search]
-(Iconscout)[https://iconscout.com]
+
+[Quill.js](https://quilljs.com/)
+
+[Taleinat](https://github.com/taleinat/levenshtein-search)
+
+[Iconscout](https://iconscout.com)
 
 To do:
 - show timestamps on card
