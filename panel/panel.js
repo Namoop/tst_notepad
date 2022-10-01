@@ -15,6 +15,7 @@ const quill = new Quill("#editor", {
 	theme: "snow",
 	placeholder: "Nothing here yet...",
 });
+
 function $(input) {
 	switch (input.constructor) {
 		case String:
@@ -22,41 +23,41 @@ function $(input) {
 			return all.length - 1 ? [...all] : all[0];
 	}
 }
-
 const editor = $("#editorpage");
 const notespage = $("#mainpage");
 const notes = $("#notes");
 const saveicon = $("#saveicon");
 let interval;
+let page = "MAIN"
 const PLACEHOLDER =
 	"<span>No notes yet! Press the <strong>+</strong> button to create a new one.</span>";
 
 function hideEditor() {
 	editor.style.display = "none";
 	notespage.style.display = "";
+	page = "MAIN"
 	endSaveLoop();
 }
 function showEditor() {
 	editor.style.display = "";
 	notespage.style.display = "none";
+	page = "EDITOR"
 	beginSaveLoop();
 }
 hideEditor();
 
 async function addBackButton() {
-	const el = $(".ql-back"); //document.createElement("button")
+	const el = $(".ql-back");
 	el.style.backgroundColor = "#bbbbbb";
 	el.style.borderRadius = "10px";
 	el.innerHTML = `<svg viewBox="0 0 512 512"><path d="M14.114 191.386 185.993 42.963c15.045-12.993 38.757-2.445 38.757 17.738v78.177C381.614 140.674 506 172.113 506 320.771c0 60.001-38.653 119.442-81.38 150.52-13.333 9.698-32.335-2.474-27.419-18.194 44.281-141.613-21.003-179.209-172.451-181.389v85.855c0 20.215-23.73 30.716-38.757 17.738L14.114 226.863c-10.811-9.338-10.826-26.126 0-35.477z"/></svg>`;
 	el.onclick = async function () {
 		if (quill.getText().length == 1) await remove(storekey);
+		else await save();
 		hideEditor();
 		showNoteCards();
-		save();
 	};
 	const toolbar = $(".ql-toolbar")[1];
-	//toolbar.innerHTML = el.outerHTML + toolbar.innerHTML;
-	//$(".ql-toolbar")[1].appendChild(el)
 }
 addBackButton();
 
@@ -247,6 +248,7 @@ quill.on("text-change", function (delta) {
 });
 
 async function save() {
+	debugger
 	if (changes.length() > 1) {
 		const contents = changes.compose(await retrieve(storekey));
 		contents.preview = quill.getText(0, 300);
@@ -262,5 +264,3 @@ function beginSaveLoop() {
 function endSaveLoop() {
 	clearInterval(interval);
 }
-
-// change store/retrieve to work with browser storage

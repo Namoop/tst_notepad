@@ -133,7 +133,6 @@ code {
 	justify-content: center;
 	padding: 10px;
 	border: 0.5px solid rgb(129, 129, 129);
-	border-radius: 5px;
 	box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
 	transition: 0.9s cubic-bezier(0.25, 0.8, 0.25, 1);
 	backface-visibility: hidden;
@@ -162,7 +161,7 @@ code {
 	z-index: 2;
 }
 .card-front {
-	background: linear-gradient(45deg, #101010, #252d36);
+	background: #212138;
 	font-size: min(4.3vw, 18px);
 	white-space: nowrap;
 	font-family:'Courier New', Courier, monospace;
@@ -172,7 +171,7 @@ code {
 	color: #212f3c;
 }
 .card-back {
-	background: linear-gradient(-45deg, #101010, #262d34);
+	background: #2e2e2e;
 	transform: rotateX(180deg);
 }
 .card-front .card-close-after {

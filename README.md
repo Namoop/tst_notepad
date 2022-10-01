@@ -16,3 +16,8 @@ Attributions:
 (Quill.js)[https://quilljs.com/]
 (Taleinat)[https://github.com/taleinat/levenshtein-search]
 (Iconscout)[https://iconscout.com]
+
+To do:
+- show timestamps on card
+- show byte size of card when asking to delete
+- use form-unsaved thing to prevent corruption
