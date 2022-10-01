@@ -28,20 +28,20 @@ const notespage = $("#mainpage");
 const notes = $("#notes");
 const saveicon = $("#saveicon");
 let interval;
-let page = "MAIN"
+let page = "MAIN";
 const PLACEHOLDER =
 	"<span>No notes yet! Press the <strong>+</strong> button to create a new one.</span>";
 
 function hideEditor() {
 	editor.style.display = "none";
 	notespage.style.display = "";
-	page = "MAIN"
+	page = "MAIN";
 	endSaveLoop();
 }
 function showEditor() {
 	editor.style.display = "";
 	notespage.style.display = "none";
-	page = "EDITOR"
+	page = "EDITOR";
 	beginSaveLoop();
 }
 hideEditor();
@@ -107,38 +107,38 @@ $("#searchbar").oninput = function (e) {
 	);
 };
 
-// Storage-specific wrapper functions
-const msg = browser.runtime.sendMessage
+// Storage functions
+const msg = browser.runtime.sendMessage;
 const MODE = "firefox";
 async function store(key, value) {
 	if (MODE == "localstorage")
 		localStorage.setItem(key, JSON.stringify(value).replace(/\\n/g, "\\n"));
 	else if (MODE == "firefox") {
-		await msg({type: "store", key: key, value: value})
+		await msg({ type: "store", key: key, value: value });
 	}
 }
 async function retrieve(key) {
 	if (MODE == "localstorage") return JSON.parse(localStorage.getItem(key));
 	else if (MODE == "firefox") {
-		return await msg({type: "retrieve", key: key})
+		return await msg({ type: "retrieve", key: key });
 	}
 }
 async function storageLength() {
 	if (MODE == "localstorage") return localStorage.length;
 	else if (MODE == "firefox") {
-		return await msg({type: "length"})
+		return await msg({ type: "length" });
 	}
 }
 async function allKeys() {
 	if (MODE == "localstorage") return Object.keys(localStorage);
 	else if (MODE == "firefox") {
-		return await msg({type: "keys"})
+		return await msg({ type: "keys" });
 	}
 }
 function newKey() {
 	if (MODE == "localstorage") return storageLength();
 	else if (MODE == "firefox") {
-		return "n"+Date.now();
+		return "n" + Date.now();
 	}
 }
 async function remove(key) {
@@ -148,19 +148,17 @@ async function remove(key) {
 			store(i, retrieve(+i + 1));
 		}
 		localStorage.removeItem(len - 1);
-	}
-	else if (MODE == "firefox") {
-		await msg({type: "remove", key: key})
+	} else if (MODE == "firefox") {
+		await msg({ type: "remove", key: key });
 	}
 }
 async function removeAll() {
-	if (MODE == "localstorage")
-	localStorage.clear();
+	if (MODE == "localstorage") localStorage.clear();
 	else if (MODE == "firefox") {
-		await msg({type: "removeAll"})
+		await msg({ type: "removeAll" });
 	}
 }
-// end
+// end storage functions
 
 async function newCard(key) {
 	const el = document.createElement("div");
@@ -186,8 +184,8 @@ async function newCard(key) {
 	const note_content = (await retrieve(key)).preview;
 	const note_title = note_content.split("\n")[0].substring(0, 16);
 	const note_preview = note_content;
-	el.querySelector("h1").innerText = note_title
-	el.querySelector("code").innerText = note_preview
+	el.querySelector("h1").innerText = note_title;
+	el.querySelector("code").innerText = note_preview;
 
 	notes.appendChild(el);
 	let deleting = false;
@@ -223,7 +221,7 @@ function modalResponse(text) {
 async function showNoteCards() {
 	const len = await storageLength();
 	notes.innerHTML = len ? "" : PLACEHOLDER;
-	for (let i of (await allKeys())) {
+	for (let i of await allKeys()) {
 		newCard(i);
 	}
 }
@@ -248,7 +246,6 @@ quill.on("text-change", function (delta) {
 });
 
 async function save() {
-	debugger
 	if (changes.length() > 1) {
 		const contents = changes.compose(await retrieve(storekey));
 		contents.preview = quill.getText(0, 300);
