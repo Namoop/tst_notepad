@@ -12,7 +12,7 @@ Adds a minimal note-taking application to the subpanel in Tree Style Tabs, to al
 - Note preview before opening
 - Neat css tricks
 
-Attributions:
+### Attributions:
 
 [Quill.js](https://quilljs.com/)
 
@@ -20,7 +20,7 @@ Attributions:
 
 [Iconscout](https://iconscout.com)
 
-To do:
+### To do:
 - show timestamps on card
 - show byte size of card when asking to delete
 - use form-unsaved thing to prevent corruption
