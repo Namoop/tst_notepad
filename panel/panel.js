@@ -247,17 +247,17 @@ let changes = new Delta();
 
 quill.on("text-change", function (delta) {
 	if (loadingNewNote) return (loadingNewNote = false);
-	// changes = changes.compose(delta);
+	changes = changes.compose(delta);
 	saveicon.style.display = "block";
 });
 
 async function save() {
 	if (changes.length() > 1) {
-		const contents = quill.getContents()//changes.compose(await retrieve(storekey));
+		const contents = quill.getContents()
 		contents.preview = quill.getText(0, 300);
 		await store(storekey, contents);
 		saveicon.style.display = "";
-		// changes = new Delta();
+		changes = new Delta();
 	}
 }
 

@@ -22,6 +22,13 @@ const promisedShutdown = new Promise((resolve, reject) => {
 	window.addEventListener("beforeunload", () => resolve(true));
 });
 
+browser.runtime.onInstalled.addListener(()=> {
+	browser.storage.local.set({
+		"keys": ["a01"],
+		"a01": {"ops":[{"insert":"Example Note\n^the first line is the title by default\n\nThis is content in an example note.\nThere can be bullet points"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"and much more"},{"attributes":{"list":"bullet"},"insert":"\n"},{"insert":"\n\"Famous quote from an article\""},{"attributes":{"blockquote":true},"insert":"\n"},{"insert":"\n"}],"preview":"Example Note\n^the first line is the title by default\n\nThis is content in an example note.\nThere can be bullet points\nand much more\n\n\"Famous quote from an article\"\n\n"}
+	})
+})
+
 browser.runtime.onMessageExternal.addListener((message, sender) => {
 	switch (sender.id) {
 		case TST_ID:

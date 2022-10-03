@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
 	"name": "TST Notepad",
-	"version": "1.2",
+	"version": "1.3",
 
 	"description": "Adds a notepad to the Tree Style Tabs subpanel",
 
