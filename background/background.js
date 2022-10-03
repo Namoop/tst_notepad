@@ -55,14 +55,7 @@ browser.runtime.onMessage.addListener(async function (message) {
 			}
 			return;
 		case "retrieve":
-			//on get use results object?
 			const res = (await browser.storage.local.get(message.key))[message.key];
-			const bytes = new TextEncoder().encode(
-				Object.entries(res)
-					.map(([key, value]) => key + JSON.stringify(value))
-					.join("")
-			).length;
-			res.bytes = bytes;
 			return res;
 		case "length":
 			return keys.length;

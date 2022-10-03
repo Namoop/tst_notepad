@@ -108,8 +108,13 @@ $("#searchbar").oninput = function (e) {
 };
 
 // Storage functions
-const msg = browser.runtime.sendMessage;
-const MODE = "firefox";
+let msg, MODE;
+try {
+	msg = browser.runtime.sendMessage;
+	MODE = "firefox"
+}
+catch (e) { MODE = "localstorage"}
+
 async function store(key, value) {
 	if (MODE == "localstorage")
 		localStorage.setItem(key, JSON.stringify(value).replace(/\\n/g, "\\n"));
@@ -192,7 +197,8 @@ async function newCard(key) {
 	$(".card-close-container").at(-1).onclick = async function () {
 		deleting = true;
 		const ok = await modalResponse(
-			"Are you sure you want to delete this note?"
+			`Are you sure you want to delete this note?
+			It is ${(JSON.stringify(await retrieve(key))+"").length} bytes`
 		);
 		if (ok) {
 			await remove(key);
@@ -241,17 +247,17 @@ let changes = new Delta();
 
 quill.on("text-change", function (delta) {
 	if (loadingNewNote) return (loadingNewNote = false);
-	changes = changes.compose(delta);
+	// changes = changes.compose(delta);
 	saveicon.style.display = "block";
 });
 
 async function save() {
 	if (changes.length() > 1) {
-		const contents = changes.compose(await retrieve(storekey));
+		const contents = quill.getContents()//changes.compose(await retrieve(storekey));
 		contents.preview = quill.getText(0, 300);
 		await store(storekey, contents);
 		saveicon.style.display = "";
-		changes = new Delta();
+		// changes = new Delta();
 	}
 }
 
