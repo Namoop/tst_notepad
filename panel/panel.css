@@ -53,6 +53,9 @@ body {
 	padding: 2px;
 	display: none;
 }
+.ql-editor ol, .ql-editor ul {
+    padding-left: 0.2em;
+}
 :root {
 	--mult: 2.5px;
 }
